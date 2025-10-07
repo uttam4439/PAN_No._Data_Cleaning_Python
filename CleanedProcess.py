@@ -52,4 +52,17 @@ def is_valid_pan(pan):
     return True
 
 dataframe["Status"] = dataframe["Pan_Numbers"].apply(lambda x: "Valid" if is_valid_pan(x) else "Invalid")
-print(dataframe.head(10))
+print(dataframe.head(10))   
+
+
+# Summary of All in New Data Frame(Dictonary)
+Total_Pan_no = len(pd.read_excel('PAN Number Validation Dataset.xlsx'))
+Valid_pan = (dataframe["Status"] == "Valid").sum()
+Invalid_pan = (dataframe["Status"] == "Invalid").sum()
+Missing_pan = Total_Pan_no - (Valid_pan + Invalid_pan)
+
+
+print("Total PAN_No in file = " ,Total_Pan_no)
+print("Total Valid PAN in File = ",Valid_pan)
+print("Total Invalid PAN in File = ",Invalid_pan)
+print("Total Missing PAN in File = ",Missing_pan)
