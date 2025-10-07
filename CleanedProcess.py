@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 dataframe = pd.read_excel("Cleaned_PAN_Data.xlsx")
 print(len(dataframe))
@@ -31,3 +32,24 @@ def has_sequence(pan):
 
 print("ABCDE ",has_sequence('ABCDE'))
 print("ABCDE ",has_sequence('ABCDF'))
+
+
+def is_valid_pan(pan):
+    if(len(pan) != 10):
+        return False
+    
+    ''' (^ — Start of string ) ([A-Z]{5} — First 5 characters) ([0-9]{4} — Next 4 characters)
+    ([A-Z] — Last character) ($ — End of string) '''
+    if not re.match(r'^[A-Z]{5}[0-9]{4}[A-Z]$', pan): # Not + regular exp. -> not None = true 
+        return False                                  # if(not none = true) return false
+    
+    if has_adjacent_rep(pan):
+        return False
+    
+    if has_sequence(pan):
+        return False
+    
+    return True
+
+dataframe["Status"] = dataframe["Pan_Numbers"].apply(lambda x: "Valid" if is_valid_pan(x) else "Invalid")
+print(dataframe.head(10))
