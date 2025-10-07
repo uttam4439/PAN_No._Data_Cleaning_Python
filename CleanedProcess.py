@@ -66,3 +66,16 @@ print("Total PAN_No in file = " ,Total_Pan_no)
 print("Total Valid PAN in File = ",Valid_pan)
 print("Total Invalid PAN in File = ",Invalid_pan)
 print("Total Missing PAN in File = ",Missing_pan)
+
+#Creating DataFrame 
+df_Summary = pd.DataFrame({"Total PAN_No in file":[Total_Pan_no],
+                          "Total Valid PAN in File":[Valid_pan],
+                          "Total Invalid PAN in File":[Invalid_pan],
+                          "Total Missing PAN in File":[Missing_pan]})
+
+print(df_Summary.head())
+
+# Saving and Making Result Excel File
+with pd.ExcelWriter("Pan Validation Result.xlsx") as project:  # Python’s context manager
+    dataframe.to_excel(project,sheet_name="Pan_Verified",index=False)
+    df_Summary.to_excel(project,sheet_name="Summary",index=False)
